@@ -1,0 +1,19 @@
+{
+  "name": "better-stickies",
+  "description": "A better desktop sticky note suite",
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "start": ".\\node_modules\\.bin\\electron ."
+  },
+  "readme": "see README file",
+  "repository": {},
+  "license": "UNLICENSED",
+  "dependencies": {
+    "electron": "^1.7.10",
+    "electron-db": "^0.7.1",
+    "electron-window-manager": "^1.0.5",
+    "moniker": "^0.1.2",
+    "tinycolor2": "^1.4.1"
+  }
+}
