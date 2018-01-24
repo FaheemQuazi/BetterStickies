@@ -15,7 +15,7 @@ if (fs.existsSync(BS_noteDataPath)) {
 
 app.on('ready', () => {
     // =====[+Helper Data+]=====
-    function makeNote(nid = false, ncont = "Default Note", ncolor = "#feff9c") {
+    function makeNote(nid = false, ncont = "Default Note", npos = [785, 350], ncolor = "#feff9c") {
         // unique identifier for each note
         // IF NOTE EXISTS: Use the original identifier
         let identifier = nid || Moniker.choose();
@@ -33,19 +33,18 @@ app.on('ready', () => {
             protocol: 'file:',
             slashes: 'true'
         }));
+        newNote.object.hide();
+        newNote.move(npos[0], npos[1]);
 
         newNote.object.webContents.on('did-finish-load', () => {
             newNote.object.webContents.send('nm-set-name', identifier);
             newNote.object.webContents.send('nm-set-data', noteContents);
+            newNote.object.show();
         });
         // newNote.toggleDevTools(true);
     
         console.log("[WDM] MakeNote() Executed")
     }
-
-    global.nm = {
-        "closing": false
-    };
     // =====[-Helper Data-]=====
 
     // =====[+Window Manager+]=====
@@ -56,10 +55,10 @@ app.on('ready', () => {
 
     // set default BrowserWindow properties
     windowManager.setDefaultSetup({
-        width: 550,
-        height: 500,
-        minWidth: 150,
-        minHeight: 150,
+        width: 350,
+        height: 350,
+        minWidth: 225,
+        minHeight: 225,
         maximizable: false,
         closable: false,
         frame: false,
@@ -147,9 +146,9 @@ app.on('ready', () => {
 
     ipcMain.on('nm-save-note', (event, arg) => {
         console.log("[IPC] NM-Save-Note Recieved");
-        console.log(arg, typeof(arg));
         BS_noteData[arg.nid] = {
-            "data": arg.ndata
+            "data": arg.ndata,
+            "pos": windowManager.windows[arg.nid].object.getPosition()
         }
         event.returnValue = true;
     });
@@ -164,7 +163,8 @@ app.on('ready', () => {
         for (let n = 0; n < notes.length; n++) {
             let nid = notes[n];
             let ndata = BS_noteData[nid].data;
-            makeNote(nid, ndata);
+            let npos = BS_noteData[nid].pos;
+            makeNote(nid, ndata, npos);
         }
     } else {
         makeNote();
