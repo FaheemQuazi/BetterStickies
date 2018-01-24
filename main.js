@@ -1,32 +1,39 @@
 const { app, BrowserWindow, globalShortcut, ipcMain, Menu, Tray } = require('electron');
-const db = require('electron-db');
 const path = require("path");
+const url = require("url");
+const fs = require("fs");
 const Moniker = require("moniker");
 const windowManager = require('electron-window-manager');
 
 let BS_TrayIcon = null;
 
-db.createTable('noteData', (succ, msg) => {
-    console.log("[NDB] Note Database Initialization: " + msg);
-});
+var BS_noteData = {};
+let BS_noteDataPath = path.join(__dirname, "userData/noteData.json")
+if (fs.existsSync(BS_noteDataPath)) {
+    BS_noteData = JSON.parse(fs.readFileSync(BS_noteDataPath));
+}
 
 app.on('ready', () => {
     // =====[+Helper Data+]=====
-    function makeNote(nid = false, ncont = false) {
+    function makeNote(nid = false, ncont = "Default Note", ncolor = "#feff9c") {
         // unique identifier for each note
         // IF NOTE EXISTS: Use the original identifier
         let identifier = nid || Moniker.choose();
+
         // placeholder data for each note
         // IF NOTE EXISTS: Use data that was previously in note;
-        let noteContents = ncont || {
-            "color": "#feff9c",
-            "data": "Hello World!"
+        let noteContents = {
+            "color": ncolor,
+            "data": ncont
         }
     
         // create the new note window
-        var newNote = windowManager.open(identifier, identifier, "/pages/base.html");
-        // open window
-        newNote.open();
+        var newNote = windowManager.open(identifier, identifier, url.format({
+            pathname: path.join(__dirname, '/pages/base.html'),
+            protocol: 'file:',
+            slashes: 'true'
+        }));
+
         newNote.object.webContents.on('did-finish-load', () => {
             newNote.object.webContents.send('nm-set-name', identifier);
             newNote.object.webContents.send('nm-set-data', noteContents);
@@ -85,6 +92,23 @@ app.on('ready', () => {
     BS_TrayIcon = new Tray(path.join(__dirname, 'images/icon.png'));
     const BS_TrayContext = Menu.buildFromTemplate([
         {
+            label: 'Show Stickies',
+            click: () => {
+                console.log("[ICO] Clicked");
+                Object.keys(windowManager.windows).forEach((wn) => {
+                    let wmo = windowManager.windows[wn];
+                    if (wmo.object != null) {
+                        wmo.focus();
+                    } else {
+                        delete windowManager.windows[wn];
+                    }
+                });
+            }
+        },
+        {
+            type: 'separator'
+        },
+        {
             label: 'Quit',
             click: () => {
                 app.quit();
@@ -117,26 +141,34 @@ app.on('ready', () => {
 
     ipcMain.on('nm-delete-note', (event, arg) => {
         console.log("[IPC] NM-Delete-Note Recieved");
-        db.deleteRow('noteData', {'nid': arg}, (succ, msg) => {
-            console.log("[NDB] " + msg);
-        });
+        delete BS_noteData[arg];
         windowManager.windows[arg].object.destroy();
     });
 
     ipcMain.on('nm-save-note', (event, arg) => {
         console.log("[IPC] NM-Save-Note Recieved");
-        db.insertTableContent('noteData', arg, (succ, msg) => {
-            console.log("[NDB] " + msg);
-            event.returnValue = succ;
-        });
-        windowManager.windows[arg].object.destroy();
+        console.log(arg, typeof(arg));
+        BS_noteData[arg.nid] = {
+            "data": arg.ndata
+        }
+        event.returnValue = true;
     });
 
     console.log("[IPC] Inter-Process-Communication Initialized");
     // =====[-IPC Communication-]=====
 
     // =====[+Load Data+]=====
-    makeNote();
+    var notes = Object.keys(BS_noteData);
+    console.log(notes.length, notes);
+    if (notes.length > 0) {
+        for (let n = 0; n < notes.length; n++) {
+            let nid = notes[n];
+            let ndata = BS_noteData[nid].data;
+            makeNote(nid, ndata);
+        }
+    } else {
+        makeNote();
+    }
     // =====[-Load Data-]=====
 });
 
@@ -153,5 +185,8 @@ app.on('before-quit', () => {
 app.on('will-quit', () => {
     console.log("[APP] Have a nice day!");
     // Unregister all shortcuts
-    globalShortcut.unregisterAll()
+    globalShortcut.unregisterAll();
+    // save data
+    console.log(BS_noteData);
+    fs.writeFileSync(BS_noteDataPath, JSON.stringify(BS_noteData));
 });

@@ -35,8 +35,9 @@ document.querySelector("#deleteThisNote").addEventListener("click", (evt) => {
 
 // window close handling
 ipcRenderer.on('nm-exit', (event, args) => {
-    if (!ISDELETED) ipcRenderer.send("nm-save-note", {
+    if (!ISDELETED) ipcRenderer.sendSync("nm-save-note", {
         nid: WINDOWNAME,
         ndata: document.querySelector("#noteContent").innerHTML
     });
+    remote.getCurrentWindow().destroy();
 });
