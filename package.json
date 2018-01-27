@@ -8,7 +8,7 @@
   },
   "readme": "see README file",
   "repository": {},
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "electron": "^1.7.10",
     "electron-window-manager": "^1.0.5",
