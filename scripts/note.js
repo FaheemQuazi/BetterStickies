@@ -11,8 +11,8 @@ ipcRenderer.once('nm-set-name', (event, args) => {
     WINDOWNAME = args;
 });
 ipcRenderer.once('nm-set-data', (event, args) => {
-    document.body.style.backgroundColor = args.color;
-    document.querySelector("#noteHeader").style.backgroundColor = tinycolor(args.color).analogous()[1].darken(20).toString();
+    document.querySelector("#NoteColor").value = args.color;
+    updateColor(args.color);
     document.querySelector("#noteContent").innerHTML = args.data;
 });
 
@@ -33,11 +33,41 @@ document.querySelector("#deleteThisNote").addEventListener("click", (evt) => {
     }
 });
 
+// color change
+document.querySelector("#setNoteColor").addEventListener("click", (evt) => {
+    document.querySelector("#NoteColor").jscolor.show();
+});
+function updateColor (jc) {
+    // get bg colors
+    let c = typeof jc == "object" ? ("#" + jc) : jc;
+    let nhc = tinycolor(c).analogous()[1].darken(20).toString();
+    // set bg colors
+    document.body.style.backgroundColor = c;
+    document.querySelector("#noteHeader").style.backgroundColor = nhc;
+    // compute most readable font color
+    document.body.style.color = tinycolor.mostReadable(c, [nhc],{includeFallbackColors:true}).toHexString();
+}
+
+// window focus/blur events
+window.addEventListener("focus", (event) => {
+    document.querySelectorAll(".nd").forEach( (nd) => {
+        nd.style.opacity = 1;
+    });
+});
+window.addEventListener("blur", (event) => {
+    document.querySelectorAll(".nd").forEach( (nd) => {
+        nd.style.opacity = 0;
+
+    });
+    document.querySelector("#NoteColor").jscolor.hide();
+});
+
 // window close handling
 ipcRenderer.on('nm-exit', (event, args) => {
     if (!ISDELETED) ipcRenderer.sendSync("nm-save-note", {
         nid: WINDOWNAME,
-        ndata: document.querySelector("#noteContent").innerHTML
+        ndata: document.querySelector("#noteContent").innerHTML,
+        ncolor: tinycolor(document.body.style.backgroundColor).toHexString()
     });
     remote.getCurrentWindow().destroy();
 });

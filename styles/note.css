@@ -43,9 +43,14 @@ body {
     font-size: 1.5rem !important;
 }
 
-#makeNewNote:hover, #deleteThisNote:hover {
+.nd:hover {
     background-color: rgba(0,0,0,0.25);
     transition: background-color 0.5s ease;
+}
+
+#NoteColor {
+    opacity: 0;
+    pointer-events: none;
 }
 
 #noteContent {

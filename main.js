@@ -5,12 +5,16 @@ const fs = require("fs");
 const Moniker = require("moniker");
 const windowManager = require('electron-window-manager');
 
+// store tray icon reference
 let BS_TrayIcon = null;
 
+// loading existing note data
 var BS_noteData = {};
 let BS_noteDataPath = path.join(__dirname, "userData/noteData.json")
 if (fs.existsSync(BS_noteDataPath)) {
     BS_noteData = JSON.parse(fs.readFileSync(BS_noteDataPath));
+} else {
+    fs.writeFileSync(BS_noteDataPath, "{}");
 }
 
 app.on('ready', () => {
@@ -148,7 +152,8 @@ app.on('ready', () => {
         console.log("[IPC] NM-Save-Note Recieved");
         BS_noteData[arg.nid] = {
             "data": arg.ndata,
-            "pos": windowManager.windows[arg.nid].object.getPosition()
+            "pos": windowManager.windows[arg.nid].object.getPosition(),
+            "col": arg.ncolor
         }
         event.returnValue = true;
     });
@@ -164,7 +169,8 @@ app.on('ready', () => {
             let nid = notes[n];
             let ndata = BS_noteData[nid].data;
             let npos = BS_noteData[nid].pos;
-            makeNote(nid, ndata, npos);
+            let ncol = BS_noteData[nid].col;
+            makeNote(nid, ndata, npos, ncol);
         }
     } else {
         makeNote();

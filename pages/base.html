@@ -4,12 +4,16 @@
         <base href="../">
         <link rel="stylesheet" href="fonts/maticon/material-icons.css">
         <link rel="stylesheet" href="styles/note.css">
+
+        <script src="scripts/jscolor.min.js"></script>
     </head>
     <body>
         <div id="noteHeader">
             <div id="makeNewNote" class='nd maticon'>add</div>
+            <div id="setNoteColor" class="nd maticon">color_lens</div>
             <div id="deleteThisNote" class='nd maticon'>delete</div>
         </div>
+        <input class="jscolor {closable:true,closeText:'Close'}" onchange="updateColor(this.jscolor)" value='' id="NoteColor"></input>
         <div id="noteContent" contenteditable="true"></div>
         <script type="text/javascript" src="scripts/note.js"></script>
     </body>
