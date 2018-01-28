@@ -2,34 +2,22 @@
 
 A cross-platform sticky notes emulator powered by Electron.
 
-## Running Feature List
+## Features
 
-Items that are checked off ([x]) are implemented.<br />
-Items that are bolded are currently being developed<br />
-Items that are unchecked are planned to be implemeted by the listed version
+For a list of all implemented, planned, and in-development features, check out [the Github Projects page](https://github.com/FaheemQuazi/BetterStickies/projects/1).
+- Looks and feels like real sticky notes
+- Notes automatically save on exit
+- Unobtrusive Windows: Sticky Notes don't appear in the taskbar
+    - To show your stickies, click the icon in the system tray!
+- Complete Color Customization: Use whatever color you want! Font color automatically adjusts
 
-### Ver. 1.0 (Currently In Progress / High Priority)
-- [x] Looks and Feels like real sticky notes
-- [x] Notes automatically save on exit
-    - [x] Save Position Data
-    - [x] Save Color Data
-    - [ ] **Autosave Functionality**
-- [x] Unobtrusive Windows : Windows don't take up space in taskbar/dock
-    - [x] Tray Icon : Tray Icon acts as a "show all stickies" button on click
-- [x] Note color customization
-    - [x] Automatically adjust font color based on chosen note color
-- [ ] Auto Updater
+### Planned Features
 
-### Version 1.1 (For the Future / Lower Priority)
-- [ ] Font Customization
-    - [ ] Global
-    - [ ] Per Note 
-- [ ] Configuration File (Global Settings)
-    - [ ] Custom NoteData save path
-    - [ ] Default Properties
-- [ ] Note "Types" i.e. Notes with dynamic data
-- [ ] 
-
+This list is not comprehensive; see the [the Github Projects page](https://github.com/FaheemQuazi/BetterStickies/projects/1) for more details.<br/>
+At the moment, I'm focusing on a 1.0 release, so the project page may not currently include the items below (yet).
+- Font Customization
+- Global configuration window / file
+- Custom Note Types
 
 ## Built With
 
