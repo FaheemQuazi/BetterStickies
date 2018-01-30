@@ -48,6 +48,26 @@ function updateColor (jc) {
     document.body.style.color = tinycolor.mostReadable(c, [nhc],{includeFallbackColors:true}).toHexString();
 }
 
+// save note function
+function saveNote() {
+    ipcRenderer.sendSync("nm-save-note", {
+        nid: WINDOWNAME,
+        ndata: document.querySelector("#noteContent").innerHTML,
+        ncolor: tinycolor(document.body.style.backgroundColor).toHexString()
+    });
+    return true;
+}
+// autosave handler
+var asTimeoutHandler = 0;
+document.querySelector("#noteContent").addEventListener("keypress", (event) => {
+    try {
+        clearTimeout(asTimeoutHandler);
+    } catch (ex) {}
+    asTimeoutHandler = setTimeout(() => {
+        saveNote();
+    }, 5000);
+})
+
 // window focus/blur events
 window.addEventListener("focus", (event) => {
     document.querySelectorAll(".nd").forEach( (nd) => {
@@ -60,14 +80,17 @@ window.addEventListener("blur", (event) => {
 
     });
     document.querySelector("#NoteColor").jscolor.hide();
+
+    try {
+        clearTimeout(asTimeoutHandler);
+    } catch (ex) {}
+    if (!ISDELETED) saveNote();
 });
 
 // window close handling
 ipcRenderer.on('nm-exit', (event, args) => {
-    if (!ISDELETED) ipcRenderer.sendSync("nm-save-note", {
-        nid: WINDOWNAME,
-        ndata: document.querySelector("#noteContent").innerHTML,
-        ncolor: tinycolor(document.body.style.backgroundColor).toHexString()
-    });
+    try {
+        clearTimeout(asTimeoutHandler);
+    } catch (ex) {}
     remote.getCurrentWindow().destroy();
 });
