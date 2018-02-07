@@ -1,18 +1,36 @@
 {
   "name": "better-stickies",
+  "author": {
+    "name": "Faheem Quazi",
+    "email": "faheem@quazi.me",
+    "url": "http://quazi.me"
+  },
   "description": "A better desktop sticky note suite",
   "version": "0.1.0",
   "main": "main.js",
   "scripts": {
-    "start": ".\\node_modules\\.bin\\electron ."
+    "start": ".\\node_modules\\.bin\\electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "readme": "see README file",
-  "repository": {},
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/FaheemQuazi/BetterStickies"
+  },
   "license": "MIT",
   "dependencies": {
-    "electron": "^1.7.10",
     "electron-window-manager": "^1.0.5",
     "moniker": "^0.1.2",
     "tinycolor2": "^1.4.1"
+  },
+  "devDependencies": {
+    "electron": "^1.7.10",
+    "electron-builder": "^19.55.3"
+  }, 
+  "build": {
+    "appId": "me.quazi.betterstickies",
+    "productName": "Better Stickies",
+    "copyright": "Copyright (C) 2018 Faheem Quazi"
   }
 }
