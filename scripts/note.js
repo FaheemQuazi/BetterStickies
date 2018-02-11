@@ -94,3 +94,11 @@ ipcRenderer.on('nm-exit', (event, args) => {
     } catch (ex) {}
     remote.getCurrentWindow().destroy();
 });
+
+// window force save
+ipcRenderer.on('nm-force-save', (event,args) => {
+    try {
+        clearTimeout(asTimeoutHandler);
+    } catch (ex) {}
+    saveNote();
+})

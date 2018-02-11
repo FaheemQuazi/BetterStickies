@@ -109,6 +109,20 @@ app.on('ready', () => {
             }
         },
         {
+            label: 'Save All Stickies',
+            click: () => {
+                console.log("[ICO] Force Save Initiated");
+                Object.keys(windowManager.windows).forEach((wn) => {
+                    let wmo = windowManager.windows[wn];
+                    if (wmo.object != null) {
+                        wmo.object.webContents.send('nm-force-save');
+                    } else {
+                        delete windowManager.windows[wn];
+                    }
+                });
+            }
+        },
+        {
             type: 'separator'
         },
         {
