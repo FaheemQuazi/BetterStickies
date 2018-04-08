@@ -1,5 +1,6 @@
 {
     "name": "better-stickies",
+    "displayName": "BetterStickies",
     "author": {
         "name": "Faheem Quazi",
         "email": "faheem@quazi.me",
@@ -7,7 +8,7 @@
     },
     "description": "A better desktop sticky note suite",
     "version": "0.1.0-test",
-    "main": "main.js",
+    "main": "src/main.js",
     "scripts": {
         "start": "electron-forge start",
         "pack": "electron-builder --dir",
@@ -59,12 +60,12 @@
             "electronInstallerDebian": {},
             "electronInstallerRedhat": {},
             "github_repository": {
-                "owner": "",
-                "name": ""
+                "owner": "FaheemQuazi",
+                "name": "BetterStickies"
             },
             "windowsStoreConfig": {
-                "packageName": "",
-                "name": "betterstickies"
+                "packageName": "me.quazi.BetterStickies",
+                "name": "BetterStickies"
             }
         }
     }
