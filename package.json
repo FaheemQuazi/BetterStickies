@@ -9,9 +9,11 @@
     "version": "0.1.0-test",
     "main": "main.js",
     "scripts": {
-        "start": ".\\node_modules\\.bin\\electron .",
+        "start": "electron-forge start",
         "pack": "electron-builder --dir",
-        "dist": "electron-builder --publish always"
+        "dist": "electron-builder --publish always",
+        "package": "electron-forge package",
+        "make": "electron-forge make"
     },
     "readme": "see README file",
     "repository": {
@@ -20,12 +22,50 @@
     },
     "license": "MIT",
     "dependencies": {
+        "electron-compile": "^6.4.2",
         "electron-is-dev": "^0.3.0",
+        "electron-squirrel-startup": "^1.0.0",
         "electron-window-manager": "^1.0.5",
         "moniker": "^0.1.2",
         "tinycolor2": "^1.4.1"
     },
     "devDependencies": {
-        "electron": "^1.7.10"
+        "babel-plugin-transform-async-to-generator": "^6.24.1",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-react": "^6.24.1",
+        "electron-forge": "^5.1.1",
+        "electron-prebuilt-compile": "1.8.4"
+    },
+    "config": {
+        "forge": {
+            "make_targets": {
+                "win32": [
+                    "squirrel"
+                ],
+                "darwin": [
+                    "zip"
+                ],
+                "linux": [
+                    "deb",
+                    "rpm"
+                ]
+            },
+            "electronPackagerConfig": {
+                "packageManager": "yarn"
+            },
+            "electronWinstallerConfig": {
+                "name": "better_stickies"
+            },
+            "electronInstallerDebian": {},
+            "electronInstallerRedhat": {},
+            "github_repository": {
+                "owner": "",
+                "name": ""
+            },
+            "windowsStoreConfig": {
+                "packageName": "",
+                "name": "betterstickies"
+            }
+        }
     }
 }
