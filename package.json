@@ -20,41 +20,12 @@
     },
     "license": "MIT",
     "dependencies": {
-        "electron-updater": "^2.20.1",
+        "electron-is-dev": "^0.3.0",
         "electron-window-manager": "^1.0.5",
         "moniker": "^0.1.2",
         "tinycolor2": "^1.4.1"
     },
     "devDependencies": {
-        "electron": "^1.7.10",
-        "electron-builder": "^19.55.3"
-    },
-    "build": {
-        "appId": "me.quazi.betterstickies",
-        "productName": "Better Stickies",
-        "copyright": "Copyright (C) 2018 Faheem Quazi",
-        "win": {
-            "target": "nsis"
-        },
-        "linux": {
-            "target": [
-                "AppImage",
-                "deb"
-            ]
-        },
-        "dmg": {
-            "contents": [
-                {
-                    "x": 130,
-                    "y": 220
-                },
-                {
-                    "x": 410,
-                    "y": 220,
-                    "type": "link",
-                    "path": "/Applications"
-                }
-            ]
-        }
+        "electron": "^1.7.10"
     }
 }

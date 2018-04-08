@@ -4,6 +4,7 @@ const url = require("url");
 const fs = require("fs");
 const Moniker = require("moniker");
 const windowManager = require('electron-window-manager');
+const isDev = require('electron-is-dev');
 
 // store tray icon reference
 let BS_TrayIcon = null;
@@ -18,6 +19,12 @@ if (fs.existsSync(BS_noteDataPath)) {
 }
 
 app.on('ready', () => {
+    // =====[+AutoUpdater+]=====
+    if (!isDev) {
+        
+    }
+    // =====[-AutoUpdater-]=====
+    
     // =====[+Helper Data+]=====
     function makeNote(nid = false, ncont = "Default Note", npos = [785, 350], ncolor = "#feff9c") {
         // unique identifier for each note
