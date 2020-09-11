@@ -3484,8 +3484,8 @@ node-abi@^2.0.0:
     semver "^5.4.1"
 
 node-fetch@^2.0.0:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.1.2.tgz#ab884e8e7e57e38a944753cec706f788d1768bb5"
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
 
 node-gyp@^3.4.0, node-gyp@^3.6.0:
   version "3.6.2"
